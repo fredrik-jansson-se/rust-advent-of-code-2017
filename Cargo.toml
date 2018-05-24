@@ -1,0 +1,6 @@
+[package]
+name = "adevent_of_code2017"
+version = "0.1.0"
+authors = ["Fredrik Jansson <frjansso@cisco.com>"]
+
+[dependencies]
