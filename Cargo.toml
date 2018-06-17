@@ -6,3 +6,4 @@ authors = ["Fredrik Jansson <frjansso@cisco.com>"]
 [dependencies]
 combine = "*"
 regex = "*"
+lazy_static = "*"
