@@ -1,5 +1,9 @@
 image: "rust:latest"
 
+variables:
+  http_proxy: http://proxy.esl.cisco.com:80/
+  https_proxy: http://proxy.esl.cisco.com:80/
+
 test:cargo:
   script:
     - rustc --version && cargo --version
