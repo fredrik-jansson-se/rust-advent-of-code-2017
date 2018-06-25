@@ -3,6 +3,7 @@ image: "rust:latest"
 variables:
   http_proxy: http://proxy.esl.cisco.com:80/
   https_proxy: http://proxy.esl.cisco.com:80/
+  no_proxy: .cisco.com,localhost,127.0.0.1
 
 test:cargo:
   script:
