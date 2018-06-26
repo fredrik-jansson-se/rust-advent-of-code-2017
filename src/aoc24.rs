@@ -3,7 +3,7 @@ use std::fs;
 
 pub fn run() {
     let input = fs::read_to_string("day24.txt").unwrap();
-    // println!("aoc24-1: {}", run_1(&input));
+    println!("aoc24-1: {}", run_1(&input));
     println!("aoc24-2: {:?}", run_2(&input));
 }
 
@@ -19,10 +19,6 @@ impl Component {
             left: left,
             right: right
         }
-    }
-
-    fn valid_start(&self) -> bool {
-        self.left == 0 || self.right == 0
     }
 
     fn can_follow(&self, val: usize) -> bool {
@@ -51,18 +47,6 @@ fn parse(row: &str) -> Component {
     Component::new(s2i(&c[1]), s2i(&c[2]))
 }
 
-fn filter_copy(components: &[Component], f: &Component) -> Vec<Component> {
-    let mut s = Vec::new();
-
-    for c in components {
-        if c != f {
-            s.push(c.clone());
-        }
-    }
-
-    s
-}
-
 #[derive(Debug, Clone)]
 struct Part {
     value: usize,
@@ -76,14 +60,6 @@ impl Part {
             children: Vec::new(),
         }
     }   
-
-    fn find_children(&mut self, parts: Vec<Component>) -> Vec<Component> {
-        let (c,o) : (Vec<Component>, Vec<Component>) = parts.iter().partition(|&p| p.can_follow(self.value));
-
-        self.children = c.iter().map(|&p| Part::new(p.get_other_side(self.value))).collect();
-
-        o
-    }
 }
 
 fn build_bridges(p: &mut Part, components: Vec<Component>) {
@@ -113,7 +89,6 @@ fn max_bridge(p: &Part) -> usize {
 
 fn longest_bridge(p: &Part) -> (usize, usize) {
     let mut c_max_depth = 0;
-    let mut mb = 0;
     let mut c_max_bridge = 0;
     for c in p.children.iter() {
         let (cd, cb) = longest_bridge(c);
