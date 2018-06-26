@@ -3,7 +3,8 @@ use std::fs;
 
 pub fn run() {
     let input = fs::read_to_string("day24.txt").unwrap();
-    println!("aoc24-1: {}", run_1(&input));
+    // println!("aoc24-1: {}", run_1(&input));
+    println!("aoc24-2: {:?}", run_2(&input));
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -85,14 +86,14 @@ impl Part {
     }
 }
 
-fn build_1(p: &mut Part, components: Vec<Component>) {
+fn build_bridges(p: &mut Part, components: Vec<Component>) {
     let p_val = p.value;
     let childs = components.iter().filter(|&c| c.can_follow(p_val));
 
     for c in childs {
         let mut new_p = Part::new(c.get_other_side(p_val));
         let comp: Vec<Component> = components.iter().cloned().filter(|&cc| *c != cc).collect();
-        build_1(&mut new_p, comp);
+        build_bridges(&mut new_p, comp);
         p.children.push(new_p);
     }
 }
@@ -110,16 +111,53 @@ fn max_bridge(p: &Part) -> usize {
     }
 }
 
+fn longest_bridge(p: &Part) -> (usize, usize) {
+    let mut c_max_depth = 0;
+    let mut mb = 0;
+    let mut c_max_bridge = 0;
+    for c in p.children.iter() {
+        let (cd, cb) = longest_bridge(c);
+        if cd > c_max_depth {
+            println!("cd: {} cb: {}", cd, cb);
+            c_max_depth = cd;
+            c_max_bridge = cb;
+        }
+        else if cd == c_max_depth && cb > c_max_bridge {
+            c_max_bridge = cb;
+        }
+    }
+    let p_val = if p.children.len() > 0 {
+        p.value * 2
+    }
+    else {
+        p.value
+    };
+
+    (1 + c_max_depth, p_val + c_max_bridge)
+}
+
 fn run_1(input: &str) -> usize {
     let components : Vec<Component> = input.lines().map(parse).collect();
 
     let mut first = Part::new(0);
 
-    build_1(&mut first, components.clone());
+    build_bridges(&mut first, components.clone());
 
-    println!("parts: {:?}", first);
+    // println!("parts: {:?}", first);
 
     max_bridge(&first)
+}
+
+fn run_2(input: &str) -> (usize, usize) {
+    let components : Vec<Component> = input.lines().map(parse).collect();
+
+    let mut first = Part::new(0);
+
+    build_bridges(&mut first, components.clone());
+
+    // println!("parts: {:?}", first);
+
+    longest_bridge(&mut first)
 }
 
 #[cfg(test)]
@@ -138,6 +176,6 @@ mod tests {
 
     #[test]
     fn aoc24_2() {
-        assert_eq!(19, run_2("0/2\n2/2\n2/3\n3/4\n3/5\n0/1\n10/1\n9/10"));
+        assert_eq!((5, 19), run_2("0/2\n2/2\n2/3\n3/4\n3/5\n0/1\n10/1\n9/10"));
     }
 }
