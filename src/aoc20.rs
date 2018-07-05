@@ -17,14 +17,6 @@ impl Vec3 {
             z: z,
         }
     }
-
-    fn mul(&self, m: i64) -> Self {
-        Vec3::new(self.x * m, self.y * m, self.z * m)
-    }
-
-    fn div(&self, m: i64) -> Self {
-        Vec3::new(self.x / m, self.y / m, self.z / m)
-    }
 }
 
 impl Add for Vec3 {
@@ -63,11 +55,6 @@ impl Particle {
     fn update(&mut self) {
         self.vel += self.acc.clone();
         self.pos += self.vel.clone();
-    }
-
-    fn update_steps(&mut self, steps: i64) {
-        self.pos += self.vel.mul(steps) + self.acc.mul(steps*steps).div(2);
-        self.vel += self.acc.mul(steps);
     }
 
     fn extreme(&self) -> i64 {
@@ -166,8 +153,8 @@ fn run_2(particles: &mut Vec<Particle>) -> usize {
 
 pub fn run() {
     let input = fs::read_to_string("day20.txt").unwrap();
-    // let mut particles : Vec<Particle> = input.lines().map(parse).collect();
-    // println!("aoc20-1: {}", run_1(&mut particles));
+    let mut particles : Vec<Particle> = input.lines().map(parse).collect();
+    println!("aoc20-1: {}", run_1(&mut particles));
     let mut particles : Vec<Particle> = input.lines().map(parse).collect();
     println!("aoc20-2: {}", run_2(&mut particles));
 }
