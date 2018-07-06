@@ -57,10 +57,6 @@ impl Particle {
         self.pos += self.vel.clone();
     }
 
-    fn extreme(&self) -> i64 {
-        -(self.vel.x + self.vel.y + self.vel.z) / (self.acc.x + self.acc.y + self.acc.z)
-    }
-
     fn dist(&self) -> i64 {
         i64::abs(self.pos.x) + i64::abs(self.pos.y) + i64::abs(self.pos.z)
     }
@@ -174,21 +170,6 @@ mod tests {
                 &Vec3::new(52, 32, -38),
                 &Vec3::new(14, -8, 11)
                 ), parse("p=<-10088,3682,-5210>, v=<52,32,-38>, a=<14,-8,11>"));
-    }
-
-    #[test]
-    fn aoc20_derived() {
-        let mut p = Particle::new(
-                &Vec3::new(-10088, 3682, -5210),
-                &Vec3::new(52, 32, -38),
-                &Vec3::new(14, -8, 11)
-                );
-
-        let e = p.extreme();
-
-        println!("p extreme: {}", e);
-
-        // assert_eq!(p, p2);
     }
 
     #[test]

@@ -1,24 +1,24 @@
-set b 81
-set c b
-jnz a 2
+set b 81 // b = 81
+set c b // c = 81
+jnz a 2 // a = 1
 jnz 1 5
-mul b 100 // b = 81000
-sub b -100000 // b = 181000
-set c b // c = 181000
-sub c -17000 // c = 198000
+mul b 100 // b = 8100
+sub b -100000 // b = 108100
+set c b // c = 108100
+sub c -17000 // c = 125100
 set f 1  // f = 1
 set d 2 // d = 2
 set e 2 // e = 2
 set g d // g = 2
 mul g e // g = 4
-sub g b // g = 
+sub g b // g = - 108096
 jnz g 2
 set f 0 // f = 0
 sub e -1  // e = 3
 set g e // g = 3 
 sub g b // 
 jnz g -8
-sub d -1
+sub d -1 // d+=1
 set g d
 sub g b
 jnz g -13

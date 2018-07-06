@@ -29,6 +29,9 @@ fn main() {
     match day {
         1 => aoc1::run(),
         2 => aoc2::run(),
+        16 => aoc16::run(),
+        18 => aoc18::run(),
+        19 => aoc19::run(),
         20 => aoc20::run(),
         21 => aoc21::run(),
         22 => aoc22::run(),

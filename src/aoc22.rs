@@ -233,7 +233,7 @@ pub fn run() {
     let mut file = File::open("day22.txt").unwrap();
     let mut map = String::new();
     file.read_to_string(&mut map).unwrap();
-    // println!("day22 - 1: {}", run_1(&map, 10000));
+    println!("day22 - 1: {}", run_1(&map, 10000));
     println!("day22 - 2: {}", run_2(&map, 10000000));
 }
 

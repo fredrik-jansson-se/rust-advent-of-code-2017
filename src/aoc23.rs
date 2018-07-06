@@ -18,6 +18,7 @@ enum Cmd {
     SubR(char, char),
     ModV(char, isize),
     ModR(char, char),
+    Npr(char, char),
 }
 
 #[derive(Debug)]
@@ -123,9 +124,29 @@ impl CPU {
                 else {
                     self.pc += 1;
                 }
+            },
+            Cmd::Npr(r1, r2) => {
+                let v2 = self.get(r2);
+                if is_composite(v2) {
+                    self.regs.insert(r1, 0);
+                }
+                else {
+                    self.regs.insert(r1, 1);
+                }
+                self.pc += 1;
             }
         }
     }
+}
+
+fn is_composite(n: isize) -> bool {
+    let sqn = (n as f64).sqrt() as isize;
+    for i in 2..(sqn+1) {
+        if n % i == 0 {
+            return true;
+        }
+    }
+    false
 }
 
 fn s2i(s: &str) -> isize {
@@ -143,6 +164,15 @@ fn parse_set(row: &str) -> Option<Cmd> {
         None => None,
         Some(c) => Some(Cmd::SetR(c[1].chars().next().unwrap(), 
                                   c[2].chars().next().unwrap()))
+    }
+}
+
+fn parse_npr(row: &str) -> Option<Cmd> {
+    let r_r = Regex::new(r"npr\s+(\w)\s+(\w)").unwrap();
+    match r_r.captures(row) {
+        None => None,
+        Some(c) => Some(Cmd::Npr(c[1].chars().next().unwrap(), 
+                                 c[2].chars().next().unwrap()))
     }
 }
 
@@ -232,6 +262,7 @@ fn parse_row(row: &str) -> Cmd {
         parse_set,
         parse_add,
         parse_sub,
+        parse_npr,
     };
 
     for p in parsers {
@@ -250,13 +281,13 @@ fn parse(code: &str) -> Vec<Cmd> {
 
 pub fn run_1(code: &str) -> usize {
     let cmds = parse(&code);
-    println!("Cmds: {:?}", cmds);
+    // println!("Cmds: {:?}", cmds);
     let mut cpu = CPU::new(0);
     loop {
         let pc = cpu.pc;
-        println!("pc: {}", pc);
+        // println!("pc: {}", pc);
         cpu.step(&cmds[pc]);
-        println!("cpu: {:?}", cpu);
+        // println!("cpu: {:?}", cpu);
         if cpu.pc >= cmds.len() {
             break;
         }
@@ -265,31 +296,49 @@ pub fn run_1(code: &str) -> usize {
 }
 
 pub fn run_2(code: &str) -> isize {
-    let cmds = parse(&code);
-    println!("Cmds: {:?}", cmds);
-    let mut cpu_1 = CPU::new(1);
+     let cmds = parse(&code);
+     println!("Cmds: {:?}", cmds);
+     let mut cpu_1 = CPU::new(1);
 
-    loop {
-        let pc = cpu_1.pc;
-        // println!("pc: {}", pc);
-        println!("cpu {:?}", cpu_1);
-        cpu_1.step(&cmds[pc]);
-        if cpu_1.pc >= cmds.len() {
-            break;
+     loop {
+         let pc = cpu_1.pc;
+         // println!("pc: {}", pc);
+         println!("cpu {:?}", cpu_1);
+         cpu_1.step(&cmds[pc]);
+         if cpu_1.pc >= cmds.len() {
+             break;
+         }
+     }
+     return *cpu_1.regs.get(&'h').unwrap();
+    
+
+    let mut h = 0;
+
+    let mut b = 81 * 100 + 100000;
+    let b_end = b + 17000;
+
+    while b <= b_end {
+        if is_composite(b) {
+            h+=1;
         }
+        b += 17;
     }
-    *cpu_1.regs.get(&'h').unwrap()
+
+
+    h
 }
 
 pub fn run() {
     let mut file = File::open("day23.txt").unwrap();
     let mut code = String::new();
     file.read_to_string(&mut code).unwrap();
-    // println!("1: {}", run_1(&code));
-    let mut file = File::open("day23-2.txt").unwrap();
+    println!("day21-1: {}", run_1(&code));
+    let mut file = File::open("day23-opt.txt").unwrap();
     let mut code = String::new();
     file.read_to_string(&mut code).unwrap();
-    println!("2: {:?}", run_2(&code));
+    println!("day21-2: {:?}", run_2(&code));
+    // 947 too high
+    // 908 too low
 }
 
 #[cfg(test)]
