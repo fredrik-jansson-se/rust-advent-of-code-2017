@@ -1,4 +1,3 @@
-// extern crate combine;
 extern crate regex;
 #[macro_use] extern crate lazy_static;
 
@@ -6,7 +5,6 @@ use std::env;
 
 mod aoc1;
 mod aoc2;
-mod aoc3;
 mod aoc16;
 mod aoc18;  
 mod aoc19;

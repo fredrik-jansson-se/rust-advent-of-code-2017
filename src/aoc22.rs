@@ -143,7 +143,7 @@ fn run_1(s: &str, iters: usize) -> usize {
     let (start, map) = parse_map(s);
     let mut state = State::new(start, map);
 
-    for i in 0..iters {
+    for _ in 0..iters {
         // println!("{:?} - {:?}", state.pos, state.dir);
         state.step();
     }

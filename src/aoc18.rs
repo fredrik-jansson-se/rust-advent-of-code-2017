@@ -340,7 +340,7 @@ pub fn run() {
     let mut file = File::open("day18.txt").unwrap();
     let mut code = String::new();
     file.read_to_string(&mut code).unwrap();
-    // println!("1: {}", run_1(&code));
+    println!("1: {}", run_1(&code));
     // 6096
     println!("2: {:?}", run_2(&code));
 }

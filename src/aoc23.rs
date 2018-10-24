@@ -312,20 +312,20 @@ pub fn run_2(code: &str) -> isize {
      return *cpu_1.regs.get(&'h').unwrap();
     
 
-    let mut h = 0;
+    // let mut h = 0;
 
-    let mut b = 81 * 100 + 100000;
-    let b_end = b + 17000;
+    // let mut b = 81 * 100 + 100000;
+    // let b_end = b + 17000;
 
-    while b <= b_end {
-        if is_composite(b) {
-            h+=1;
-        }
-        b += 17;
-    }
+    // while b <= b_end {
+    //     if is_composite(b) {
+    //         h+=1;
+    //     }
+    //     b += 17;
+    // }
 
 
-    h
+    // h
 }
 
 pub fn run() {

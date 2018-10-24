@@ -40,7 +40,7 @@ impl CPU {
 
 fn run_1(steps: usize, sfn: StateFn) -> usize {
     let mut cpu = CPU::new();
-    for i in 0..steps {
+    for _ in 0..steps {
         // println!("=> {:?}", cpu);
         sfn(&mut cpu);
         // println!("<= {:?}", cpu);
